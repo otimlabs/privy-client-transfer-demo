@@ -7,3 +7,10 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+// Buffer polyfill for browser
+declare global {
+  interface Window {
+    Buffer: typeof Buffer;
+  }
+}

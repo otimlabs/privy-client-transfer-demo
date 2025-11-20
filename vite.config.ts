@@ -5,6 +5,17 @@ import type { IncomingMessage } from "http";
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    global: "globalThis",
+  },
+  resolve: {
+    alias: {
+      buffer: "buffer",
+    },
+  },
+  optimizeDeps: {
+    include: ["buffer"],
+  },
   plugins: [
     react(),
     {
