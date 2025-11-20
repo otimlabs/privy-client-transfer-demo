@@ -34,8 +34,12 @@ A React application demonstrating how to use the Otim SDK for wallet transfers w
 
    In your Privy dashboard:
    - Enable your preferred authentication methods (email, SMS, passkeys, social logins, etc.)
-   - Configure your app domain (localhost:5173 for development)
+   - **Configure your app domains** - Add both:
+     - `http://localhost:5173` (for `npm run dev`)
+     - `http://localhost:4173` (for `npm run preview`)
    - Enable embedded wallets with "Create on login" for all users
+
+   **Important:** If you see "origins don't match" errors, make sure both `localhost:5173` and `localhost:4173` are added to your Privy app's allowed domains.
 
    Note: If you get "Login with passkey not allowed" error, make sure passkeys are enabled in your Privy app settings, or the app will use other available authentication methods.
 
@@ -98,6 +102,11 @@ The app uses Sepolia testnet by default. To change the network:
 
 ### Authentication Issues
 
+- **"origins don't match" error**: This happens when your app's origin doesn't match Privy's allowed domains. Fix by:
+  1. Go to your Privy dashboard → App Settings → Domains
+  2. Add both `http://localhost:5173` (dev server) and `http://localhost:4173` (preview server)
+  3. Make sure you're using the correct port (check your terminal output)
+  4. Clear browser cache and restart the dev server
 - Ensure your Privy app ID is correctly set in `.env`
 - Check that your domain is whitelisted in Privy dashboard
 - Verify that passkeys are enabled in Privy settings
