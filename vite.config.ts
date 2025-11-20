@@ -34,6 +34,22 @@ export default defineConfig({
       },
     }),
     {
+      name: "inject-buffer-early",
+      transformIndexHtml(html: string) {
+        // Inject Buffer polyfill script before any module scripts
+        // This ensures Buffer is available before any code runs
+        return html.replace(
+          '<script type="module" src="/src/main.tsx"></script>',
+          `<script type="module">
+      import { Buffer } from 'buffer';
+      window.Buffer = Buffer;
+      globalThis.Buffer = Buffer;
+    </script>
+    <script type="module" src="/src/main.tsx"></script>`
+        );
+      },
+    },
+    {
       name: "fix-get-with-body",
       configureServer(server) {
         // Intercept GET /delegation/status and forward with body (browsers strip GET bodies)
