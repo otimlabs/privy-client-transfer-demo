@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 import https from "https";
 import type { IncomingMessage } from "http";
 
@@ -7,6 +8,7 @@ import type { IncomingMessage } from "http";
 export default defineConfig({
   define: {
     global: "globalThis",
+    "process.env": {},
   },
   resolve: {
     alias: {
@@ -15,9 +17,22 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["buffer"],
+    esbuildOptions: {
+      define: {
+        global: "globalThis",
+      },
+    },
   },
   plugins: [
     react(),
+    nodePolyfills({
+      include: ["buffer"],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+    }),
     {
       name: "fix-get-with-body",
       configureServer(server) {
