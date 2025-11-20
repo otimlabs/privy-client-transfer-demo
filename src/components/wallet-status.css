@@ -1,0 +1,90 @@
+.wallet-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+}
+
+.wallet-status__icon {
+  flex-shrink: 0;
+}
+
+.wallet-status__icon-circle {
+  width: 48px;
+  height: 48px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.wallet-status__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.wallet-status__label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.wallet-status__address {
+  color: #e5e7eb;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  margin: 0;
+}
+
+.wallet-status__network {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.wallet-status__details-address {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(251, 191, 36, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+@media (prefers-color-scheme: light) {
+  .wallet-status {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .wallet-status::after {
+    background: linear-gradient(
+      135deg,
+      rgba(245, 158, 11, 0.2),
+      rgba(220, 38, 38, 0.2)
+    );
+  }
+
+  .wallet-status__address {
+    color: rgba(0, 0, 0, 0.9);
+    background: rgba(245, 158, 11, 0.08);
+  }
+
+  .wallet-status__network {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .wallet-status__details-address {
+    color: rgba(0, 0, 0, 0.9);
+    background: rgba(245, 158, 11, 0.08);
+  }
+}

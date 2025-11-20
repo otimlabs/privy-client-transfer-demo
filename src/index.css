@@ -1,0 +1,138 @@
+:root {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background: #0a0a0b;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0b 50%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.1) 0%,
+    transparent 70%
+  );
+  animation: pulse 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #1a1a1a;
+    background: #fafafa;
+  }
+
+  body {
+    background: radial-gradient(ellipse at top, #f3f4f6 0%, #fafafa 50%);
+  }
+
+  body::before {
+    background: radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.05) 0%,
+      transparent 70%
+    );
+  }
+}
+
+/* RainbowKit Button Overrides */
+[data-rk] {
+  --rk-fonts-body:
+    "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif !important;
+}
+
+[data-rk] button {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-rk] button[aria-label="Connect Wallet"] {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+  color: #111827 !important;
+  border: none !important;
+  padding: 0.875rem 2.5rem !important;
+  font-size: 0.95rem !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 4px 12px rgba(251, 191, 36, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-rk] button[aria-label="Connect Wallet"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow:
+    0 8px 20px rgba(251, 191, 36, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-rk] button[aria-label="Connect Wallet"] {
+    background: linear-gradient(135deg, #f59e0b 0%, #dc2626 100%) !important;
+    box-shadow:
+      0 4px 12px rgba(245, 158, 11, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  }
+
+  [data-rk] button[aria-label="Connect Wallet"]:hover {
+    box-shadow:
+      0 8px 20px rgba(245, 158, 11, 0.3),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  }
+}
