@@ -1,23 +1,9 @@
-import { usePrivy, useWallets } from "@privy-io/react-auth";
-import { useSetActiveWallet } from "@privy-io/wagmi";
-import { useEffect } from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import { WalletStatus } from "./wallet-status";
 import { AuthenticationPanel } from "./authentication-panel";
 
 export function MainContent() {
   const { login, authenticated } = usePrivy();
-  const { wallets } = useWallets();
-  const { setActiveWallet } = useSetActiveWallet();
-
-  const embeddedWallet = wallets.find(
-    (wallet) => wallet.walletClientType === "privy",
-  );
-
-  useEffect(() => {
-    if (embeddedWallet) {
-      setActiveWallet(embeddedWallet);
-    }
-  }, [embeddedWallet, setActiveWallet]);
 
   return (
     <div className="app">

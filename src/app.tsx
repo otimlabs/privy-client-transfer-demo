@@ -3,6 +3,7 @@ import { WagmiProvider } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppContainer } from "./components";
 import { MainContent } from "./components/main-content";
+import { OtimAuthProvider } from "./hooks";
 import { wagmiConfig } from "./wagmi";
 import "./app.css";
 
@@ -28,9 +29,11 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          <AppContainer>
-            <MainContent />
-          </AppContainer>
+          <OtimAuthProvider>
+            <AppContainer>
+              <MainContent />
+            </AppContainer>
+          </OtimAuthProvider>
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>

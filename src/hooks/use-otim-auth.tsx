@@ -51,6 +51,8 @@ export function OtimAuthProvider({ children }: { children: ReactNode }) {
   const isAuthenticatingRef = useRef(false);
   // Track if we've completed setup for current wallet
   const setupCompleteRef = useRef(false);
+  // Prevent re-auth during logout
+  const isLoggingOutRef = useRef(false);
 
   const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
   const walletAddress = embeddedWallet?.address ?? null;
@@ -91,6 +93,11 @@ export function OtimAuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Don't re-auth during logout
+    if (isLoggingOutRef.current) {
+      return;
+    }
+
     // Already set up for this wallet
     if (setupCompleteRef.current && otimClient) {
       return;
@@ -115,12 +122,15 @@ export function OtimAuthProvider({ children }: { children: ReactNode }) {
 
         // Need new token if none exists or wallet changed
         if (!token || storedWallet?.toLowerCase() !== currentAddress) {
+          console.log("[Otim] Authenticating with SIWE...");
           token = await authenticateWithSiwe();
           localStorage.setItem(TOKEN_KEY, token);
           localStorage.setItem(WALLET_KEY, currentAddress);
+          console.log("[Otim] SIWE authentication complete");
         }
 
         // Create client
+        console.log("[Otim] Creating Otim client...");
         const provider = await embeddedWallet.getEthereumProvider();
         const walletClient = createWalletClient({
           account: walletAddress as `0x${string}`,
@@ -137,16 +147,21 @@ export function OtimAuthProvider({ children }: { children: ReactNode }) {
         setOtimClient(client);
 
         // Check delegation status
+        console.log("[Otim] Checking delegation status...");
         const delegated = await checkDelegation(token, walletAddress);
+        console.log("[Otim] Is delegated:", delegated);
         
         if (!delegated) {
+          console.log("[Otim] Performing delegation...");
           await performDelegation(client);
+          console.log("[Otim] Delegation complete");
         }
 
         setIsDelegated(true);
         setupCompleteRef.current = true;
+        console.log("[Otim] Setup complete");
       } catch (err) {
-        console.error("Auth flow error:", err);
+        console.error("[Otim] Auth flow error:", err);
         setError(err instanceof Error ? err.message : "Authentication failed");
         // Clear bad token
         localStorage.removeItem(TOKEN_KEY);
@@ -238,24 +253,39 @@ export function OtimAuthProvider({ children }: { children: ReactNode }) {
   }, [authenticated, embeddedWallet, walletAddress, signMessage, signAuthorization, otimClient]);
 
   const logout = useCallback(async () => {
+    console.log("[Otim] Logging out...");
+    
+    // Set flag to prevent re-auth during logout
+    isLoggingOutRef.current = true;
+    
     if (otimClient) {
       try {
+        console.log("[Otim] Calling Otim logout API...");
         await otimClient.auth.logout();
+        console.log("[Otim] Otim logout complete");
       } catch (err) {
-        console.error("Logout API error:", err);
+        console.error("[Otim] Logout API error:", err);
       }
     }
 
+    console.log("[Otim] Clearing local storage...");
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(WALLET_KEY);
 
+    console.log("[Otim] Clearing state...");
     setOtimClient(null);
     setIsDelegated(false);
     setError(null);
+    setIsLoading(false);
     setupCompleteRef.current = false;
     currentWalletRef.current = null;
+    isAuthenticatingRef.current = false;
 
+    console.log("[Otim] Calling Privy logout...");
     await privyLogout();
+    
+    isLoggingOutRef.current = false;
+    console.log("[Otim] Logout complete");
   }, [otimClient, privyLogout]);
 
   const value: OtimAuthContextValue = {
