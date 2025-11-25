@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import https from "https";
+import { Buffer } from "node:buffer";
 import type { IncomingMessage } from "http";
 
 // https://vite.dev/config/
@@ -55,7 +56,17 @@ export default defineConfig({
         // Intercept GET /delegation/status and forward with body (browsers strip GET bodies)
         server.middlewares.use((req: IncomingMessage, res, next) => {
           if (req.method === "GET" && req.url?.includes("/delegation/status")) {
-            const url = new URL(req.url || "", `http://${req.headers.host}`);
+            // Handle Windows-specific URL construction issues
+            const host = req.headers.host || "localhost:5173";
+            let url: URL;
+            try {
+              url = new URL(req.url || "", `http://${host}`);
+            } catch (error) {
+              console.error("[Proxy] Invalid URL:", req.url, error);
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: "Invalid request URL" }));
+              return;
+            }
             const queryParams = Object.fromEntries(url.searchParams);
             
             if (!queryParams.address || !queryParams.chainId) {
