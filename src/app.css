@@ -132,40 +132,6 @@
   text-transform: uppercase;
 }
 
-@media (prefers-color-scheme: light) {
-  .app__content {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  }
-
-  .app__content::before {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(0, 0, 0, 0.05) 20%,
-      rgba(0, 0, 0, 0.05) 80%,
-      transparent
-    );
-  }
-
-  .app__logo-icon {
-    filter: drop-shadow(0 8px 32px rgba(245, 158, 11, 0.3));
-  }
-
-  .app__title {
-    background: linear-gradient(180deg, #1a1a1a 0%, rgba(26, 26, 26, 0.8) 100%);
-  }
-
-  .app__description {
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  .app__footer-text {
-    color: #6b7280;
-  }
-}
-
 @media (max-width: 480px) {
   .app {
     padding: 1rem;

@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 const privyConfig = {
   appearance: {
-    theme: "light" as const,
+    theme: "dark" as const,
     accentColor: "#8B5CF6" as `#${string}`,
   },
   embeddedWallets: {
